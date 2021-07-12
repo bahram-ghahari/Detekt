@@ -5,19 +5,24 @@ namespace filemon.Monitor
 {
     public class Watcher
     {
-        public string Path { get; set; }
-        public FileSystemWatcher FileWatcher { get; set; }
 
-        private NotifyFilters filters = NotifyFilters.Attributes
+        public Watcher(){
+            Path = "/App";
+            Handler = new ConsoleHandler();
+            Filters = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
                                  | NotifyFilters.DirectoryName
                                  | NotifyFilters.FileName 
                                  | NotifyFilters.Security
                                  | NotifyFilters.Size;
-        public NotifyFilters Filters { 
-            get {return filters;} 
-            set {filters = value;}    
         }
+        public IChangeHandler Handler { get; set; }
+        public string Path { get; set; }
+        public FileSystemWatcher FileWatcher { get; set; }
+ 
+        public NotifyFilters Filters { get; set; }
+
+
         public void  Run(){
  
 
@@ -25,35 +30,17 @@ namespace filemon.Monitor
 
             FileWatcher.NotifyFilter = this.Filters;
 
-            FileWatcher.Changed += OnChanged;
-            FileWatcher.Created += OnCreated;
-            FileWatcher.Deleted += OnDeleted;
-            FileWatcher.Renamed += OnRenamed;
-            FileWatcher.Error   += OnError;
+            FileWatcher.Changed += Handler.OnChanged;
+            FileWatcher.Created += Handler.OnCreated;
+            FileWatcher.Deleted += Handler.OnDeleted;
+            FileWatcher.Renamed += Handler.OnRenamed;
+            FileWatcher.Error   += Handler.OnError;
 
             FileWatcher.IncludeSubdirectories = true;
             FileWatcher.EnableRaisingEvents = true; 
         }
 
 
-        private void OnChanged(object sender, FileSystemEventArgs e){
-            Console.WriteLine("File "+e.ChangeType.ToString()+". Name: "+e.Name);
-        }
-        private void OnCreated(object sender, FileSystemEventArgs e){
-            Console.WriteLine("File "+e.ChangeType.ToString()+". Name: "+e.Name);
-
-        }
-        private void OnDeleted(object sender, FileSystemEventArgs e){
-            Console.WriteLine("File "+e.ChangeType.ToString()+". Name: "+e.Name);
-
-        }
-        private void OnRenamed(object sender, RenamedEventArgs e){
-            Console.WriteLine("File "+e.ChangeType.ToString()+". Name: "+e.Name);
-
-        }
-        private void OnError(object sender,  ErrorEventArgs e){
-            Console.WriteLine("File Error! "+e.GetException().Message);
-
-        }
+ 
     }
 }
