@@ -11,30 +11,35 @@ namespace test
         [Fact]
         public async Task Test1()
         {
-
-            /*
-            var w = new Watcher();
-            var _h = new _Handler();
-            w.Handler =_h;
+            
 
             var path = Directory.GetCurrentDirectory();
-            
-            w.Path = path;
+            string name = "sample";
+            string dir_name = Path.Combine(path,name);
+
+            var v = new _Variable();
+            v.ContainerId="con-234";
+            v.Path = path;
+            v.Handler = new string[]{"CON"};
+            var w =  Watcher.CreateWatcher(v);
+        
 
             w.Run();
 
-            Directory.CreateDirectory(path+"/sample");
-            var res = await _h.Get<FileSystemEventArgs>();
-            Assert.True(res!=null,"file monitor object id not null");
-            Assert.True(res.Name == "sample" , "file name is sample");
+            Directory.CreateDirectory(dir_name);  
 
-
-            Directory.Delete(path+"/sample");
-            */
+            Directory.Delete(dir_name);
+             
         }
     }
 
 
+    class _Variable:FilemonVariable{
+
+        public override void Run(){
+
+        }
+    }
     class _Handler:IChangeHandler{
         public FilemonVariable GlobalVariable { get; set; }
 
