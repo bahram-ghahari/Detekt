@@ -14,6 +14,10 @@ namespace filemon.Variable{
         public string OnCreatedWebHook { get; set; }
 
         public FilemonEnvironmentVariables(){
+
+
+
+            
             var _handler = GetVariable("CHANGE_HANDLER");
             this.Handler = _handler.Split('|',StringSplitOptions.RemoveEmptyEntries);
             if(Handler.Length==0)
@@ -22,6 +26,9 @@ namespace filemon.Variable{
                 if(!IsHandlerValid( this.Handler[i] ))
                     throw new ArgumentException(Handler[i]+" is not a valid filemon handler.");
             
+
+
+
             
             Path = GetVariable("PATH_TO_WATCH");
             if(string.IsNullOrWhiteSpace(Path))
@@ -29,9 +36,21 @@ namespace filemon.Variable{
 
 
 
+
+
+
             ContainerId = GetVariable("CONTAINER_ID");
-            if(string.IsNullOrWhiteSpace(ContainerId))
-                throw new ArgumentException("Variable 'CONTAINER_ID' is not set.");
+            if(string.IsNullOrWhiteSpace(ContainerId)){
+                ContainerId = "CON-";
+                var rand = new Random();
+                var random_number = rand.Next(1000000,9999999);
+                ContainerId+=random_number;
+                Warn("Variable 'CONTAINER_ID' is not set. '"+ContainerId+"' was generated randomly as the container name."); 
+
+            }
+
+
+
 
             var WebHookSelected = Handler.Count(x=>x.ToUpper().Trim() == WH)>0;
 
