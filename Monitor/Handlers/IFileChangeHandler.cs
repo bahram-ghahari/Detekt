@@ -4,6 +4,8 @@ using System.IO;
 namespace filemon.Monitor{
     public interface IChangeHandler
     {
+        FilemonVariable GlobalVariable { get; set; }
+
         String  Name{get;}
         void OnChanged(object sender, FileSystemEventArgs e);
         void OnCreated(object sender, FileSystemEventArgs e);

@@ -36,6 +36,8 @@ namespace test
 
 
     class _Handler:IChangeHandler{
+        public FilemonVariable GlobalVariable { get; set; }
+
         private FileSystemEventArgs a1;
         private RenamedEventArgs a2;
         private ErrorEventArgs a3;

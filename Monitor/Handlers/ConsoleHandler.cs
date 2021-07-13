@@ -4,6 +4,9 @@ using System.IO;
 namespace filemon.Monitor{
     public class ConsoleHandler : IChangeHandler
     { 
+        public FilemonVariable GlobalVariable { get; set; }
+
+
         public string Name { get{ return "CON";}}
         public void OnChanged(object sender, FileSystemEventArgs e){
             Console.WriteLine("File "+e.ChangeType.ToString()+". Name: "+e.Name);

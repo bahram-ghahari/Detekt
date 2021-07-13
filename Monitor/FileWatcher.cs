@@ -40,9 +40,11 @@ namespace filemon.Monitor
 
             GlobalVaribles.Run();
 
-            for (int i = 0; i < GlobalVaribles.Handler.Length; i++)
-                Handlers.Add(HandlerFactory.Create(GlobalVaribles.Handler[i]));
-            
+            for (int i = 0; i < GlobalVaribles.Handler.Length; i++){
+                var _created_handler = HandlerFactory.Create(GlobalVaribles.Handler[i]);
+                _created_handler.GlobalVariable = this.GlobalVaribles;
+                Handlers.Add(_created_handler);
+            }
 
             FileWatcher = new FileSystemWatcher(GlobalVaribles.Path);
             FileWatcher.NotifyFilter = this.Filters;
