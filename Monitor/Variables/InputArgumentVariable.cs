@@ -69,13 +69,13 @@ namespace filemon.Variable{
 
 
             if(WebHookSelected){
-                if(string.IsNullOrWhiteSpace( OnChangedWebHook ))
+                if(string.IsNullOrEmpty( OnChangedWebHook ))
                     Warn("'WH' Handler is selected, However '-wh-ch' has not been set. File changes will not be captured."); 
-                if(string.IsNullOrWhiteSpace( OnDeletedWebHook ))
+                if(string.IsNullOrEmpty( OnDeletedWebHook ))
                     Warn("'WH' Handler is selected, However '-wh-de' has not been set. File deletions will not be captured."); 
-                if(string.IsNullOrWhiteSpace( OnRenamedWebHook ))
+                if(string.IsNullOrEmpty( OnRenamedWebHook ))
                     Warn("'WH' Handler is selected, However '-wh-rn' has not been set. File name changes will not be captured."); 
-                if(string.IsNullOrWhiteSpace( OnCreatedWebHook ))
+                if(string.IsNullOrEmpty( OnCreatedWebHook ))
                     Warn("'WH' Handler is selected, However '-wh-cr' has not been set. New files will not be captured."); 
                 
             }

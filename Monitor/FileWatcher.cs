@@ -9,7 +9,6 @@ namespace filemon.Monitor
         private static Watcher _instance;
         private Watcher(FilemonVariable var){
             GlobalVaribles = var; 
-            GlobalVaribles.Run();
             Handlers = new List<IChangeHandler>(); 
             Filters = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
@@ -19,9 +18,6 @@ namespace filemon.Monitor
                                  | NotifyFilters.Size;
             FileWatcher = new FileSystemWatcher();
 
-            for (int i = 0; i < GlobalVaribles.Handler.Length; i++)
-                Handlers.Add(HandlerFactory.Create(GlobalVaribles.Handler[i]));
-            
         }
         public static Watcher CreateWatcher(FilemonVariable _var){
             
@@ -40,6 +36,14 @@ namespace filemon.Monitor
 
 
         public void  Run(){
+
+
+            GlobalVaribles.Run();
+
+            for (int i = 0; i < GlobalVaribles.Handler.Length; i++)
+                Handlers.Add(HandlerFactory.Create(GlobalVaribles.Handler[i]));
+            
+
             FileWatcher = new FileSystemWatcher(GlobalVaribles.Path);
             FileWatcher.NotifyFilter = this.Filters;
 
