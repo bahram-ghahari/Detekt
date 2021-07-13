@@ -52,14 +52,15 @@ namespace filemon.Monitor{
             json.Add("event_type",type.ToString());
             json.Add("name",name);
             json.Add("path",path);
+            json.Add("signature",GlobalVariable.WebHookSignature);
+            json.Add("container_name",GlobalVariable.ContainerId);
+
             var data = new byte[0];
 
             
             if(type== WatcherChangeTypes.Changed || type == WatcherChangeTypes.Created){
-                if(!is_dir){
-                    string full_name =  Path.Combine(path,name);
-                    data = await FileUtil.Read(full_name); 
-                }
+                if(!is_dir)
+                    data = await FileUtil.Read(path); 
             }
             if(type == WatcherChangeTypes.Renamed){
                 json.Add("old_name",oldName);

@@ -9,7 +9,7 @@ namespace filemon.Exe
         static void Main(string[] args)
         {
             try{
-                var arg_var = new filemon.Variable.InputArgumentVariables(args);
+                var arg_var = new filemon.Variable.FilemonEnvironmentVariables();
                 Watcher watcher = Watcher.CreateWatcher(arg_var);
                 //watcher.Path = args.Length>0 ? args[0] : "/home/cleantie/Documents/git/filemon/Exe";
                 
@@ -20,7 +20,7 @@ namespace filemon.Exe
                 watcher.Run();
 
 
-                
+
                 var cmd = "";
                 do{
                     Console.ForegroundColor = ConsoleColor.White;
