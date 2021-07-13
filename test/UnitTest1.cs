@@ -11,6 +11,8 @@ namespace test
         [Fact]
         public async Task Test1()
         {
+
+            /*
             var w = new Watcher();
             var _h = new _Handler();
             w.Handler =_h;
@@ -28,7 +30,7 @@ namespace test
 
 
             Directory.Delete(path+"/sample");
-
+            */
         }
     }
 
@@ -37,7 +39,9 @@ namespace test
         private FileSystemEventArgs a1;
         private RenamedEventArgs a2;
         private ErrorEventArgs a3;
+        public string Name { get{return "TEST";}}
 
+  
 
         public void OnChanged(object sender, FileSystemEventArgs e){
             a1 = e;

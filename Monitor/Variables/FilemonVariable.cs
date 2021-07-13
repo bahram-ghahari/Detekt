@@ -14,19 +14,27 @@ public abstract class FilemonVariable
         ,GCP// Google Cloud Storage Bucket
         ,AWS// Amazon's S3
     };
-    string[] Handler { get; set; }
-    string Path { get; set; }
-    string ContainerId { get; set; }
-    string OnChangedWebHook { get; set; }
-    string OnRenamedWebHook { get; set; }
-    string OnDeletedWebHook { get; set; }
-    string OnCreatedWebHook { get; set; }
+    public string[] Handler { get; set; }
+    public string Path { get; set; }
+    public string ContainerId { get; set; }
+    public string OnChangedWebHook { get; set; }
+    public string OnRenamedWebHook { get; set; }
+    public string OnDeletedWebHook { get; set; }
+    public string OnCreatedWebHook { get; set; }
+    public string WebHookSignature { get; set; }
+
+    public abstract void Run();
+
 
     protected bool IsHandlerValid(string name)=> ValidHandlers.Count(x=>x.ToUpper() == name.Trim().ToUpper())>0;
     
     protected void Warn(string message){
         if(WarningCreated!=null) WarningCreated(new WarningEventArgs(message));
 
+    }
+
+    public FilemonVariable(){
+        this.Handler=new string[0];
     }
 }
 public class WarningEventArgs:EventArgs{
@@ -35,4 +43,4 @@ public class WarningEventArgs:EventArgs{
         this.Message = message;
     }
 }
-public delegate EventHandler WarningEventHandler(WarningEventArgs arg);
+public delegate void WarningEventHandler(WarningEventArgs arg);

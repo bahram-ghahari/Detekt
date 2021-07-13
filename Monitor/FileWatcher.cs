@@ -7,49 +7,51 @@ namespace filemon.Monitor
     public class Watcher
     {
         private static Watcher _instance;
-        private Watcher(){
-            Path = "/App";
-            Handler = new ConsoleHandler();
+        private Watcher(FilemonVariable var){
+            GlobalVaribles = var; 
+            GlobalVaribles.Run();
+            Handlers = new List<IChangeHandler>(); 
             Filters = NotifyFilters.Attributes
                                  | NotifyFilters.CreationTime
                                  | NotifyFilters.DirectoryName
                                  | NotifyFilters.FileName 
                                  | NotifyFilters.Security
                                  | NotifyFilters.Size;
-            FileWatchers = new List<FileSystemWatcher>();
+            FileWatcher = new FileSystemWatcher();
+
+            for (int i = 0; i < GlobalVaribles.Handler.Length; i++)
+                Handlers.Add(HandlerFactory.Create(GlobalVaribles.Handler[i]));
+            
         }
-        public static Watcher CreateWatcher(){
+        public static Watcher CreateWatcher(FilemonVariable _var){
+            
             if(_instance == null)
             {
-                _instance = new Watcher();
-
-
+                _instance = new Watcher(_var); 
             }
             return _instance;
         }
-        public IChangeHandler Handler { get; set; }
-        public string Path { get; set; }
-        public List<FileSystemWatcher> FileWatchers { get; set; }
+        public List<IChangeHandler> Handlers { get; set; }
+         
+        public FilemonVariable GlobalVaribles { get; set; }
+        public FileSystemWatcher FileWatcher  { get; set; }
  
         public NotifyFilters Filters { get; set; }
 
 
         public void  Run(){
-            
-            FileWatchers.ForEach(fw=>{
+            FileWatcher = new FileSystemWatcher(GlobalVaribles.Path);
+            FileWatcher.NotifyFilter = this.Filters;
 
-                fw = new FileSystemWatcher(Path);
-
-                fw.NotifyFilter = this.Filters;
-
-                fw.Changed += Handler.OnChanged;
-                fw.Created += Handler.OnCreated;
-                fw.Deleted += Handler.OnDeleted;
-                fw.Renamed += Handler.OnRenamed;
-                fw.Error   += Handler.OnError;
-
-                fw.IncludeSubdirectories = true;
-                fw.EnableRaisingEvents = true; 
+            FileWatcher.IncludeSubdirectories = true;
+            FileWatcher.EnableRaisingEvents = true; 
+ 
+            Handlers.ForEach(h=>{  
+                FileWatcher.Changed += h.OnChanged;
+                FileWatcher.Created += h.OnCreated;
+                FileWatcher.Deleted += h.OnDeleted;
+                FileWatcher.Renamed += h.OnRenamed;
+                FileWatcher.Error   += h.OnError;
             });
 
         }

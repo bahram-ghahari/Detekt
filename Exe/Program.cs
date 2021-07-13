@@ -8,17 +8,36 @@ namespace filemon.Exe
         
         static void Main(string[] args)
         {
-            Watcher watcher = Watcher.CreateWatcher();
-            watcher.Path = args.Length>0 ? args[0] : "/home/cleantie/Documents/git/filemon/Exe";
-            Console.WriteLine("watcher started!");
-            watcher.Run();
-            var cmd = "";
-            do{
-                cmd = System.Console.ReadLine();
+            try{
+                var arg_var = new filemon.Variable.InputArgumentVariables(args);
+                Watcher watcher = Watcher.CreateWatcher(arg_var);
+                //watcher.Path = args.Length>0 ? args[0] : "/home/cleantie/Documents/git/filemon/Exe";
+                
+                
+                Write( ConsoleColor.Green , "Filemon started!");
 
-            }while(!checkCommand(cmd));
-            
-            watcher.FileWatcher.Dispose();
+                watcher.GlobalVaribles.WarningCreated+=(WarningEventArgs a)=> Write(ConsoleColor.Yellow , String.Format("Warning: {0}",a.Message));
+                watcher.Run();
+
+
+                
+                var cmd = "";
+                do{
+                    Console.ForegroundColor = ConsoleColor.White;
+                    cmd = System.Console.ReadLine();
+                }while(!checkCommand(cmd));
+                
+                watcher.FileWatcher.Dispose();
+
+            }
+            catch(Exception e)
+            {
+                Write( ConsoleColor.DarkRed , string.Format("Error: {0}",e.Message ));
+            }
+        }
+        static void Write(ConsoleColor col , string message){
+                Console.ForegroundColor = col;
+                Console.Out.WriteLine(message);
         }
 
         static bool checkCommand(string cmd){

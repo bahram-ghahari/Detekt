@@ -5,19 +5,15 @@ using System.Linq;
 namespace filemon.Variable{
 
     public class FilemonEnvironmentVariables:FilemonVariable{
-        public string[] Handler { get; set; }
-        public string Path { get; set; }
-        public string ContainerId { get; set; }
-        public string OnChangedWebHook { get; set; }
-        public string OnRenamedWebHook { get; set; }
-        public string OnDeletedWebHook { get; set; }
-        public string OnCreatedWebHook { get; set; }
+ 
 
         public FilemonEnvironmentVariables(){
+        }
+
+        public override void Run(){
 
 
 
-            
             var _handler = GetVariable("CHANGE_HANDLER");
             this.Handler = _handler.Split('|',StringSplitOptions.RemoveEmptyEntries);
             if(Handler.Length==0)
@@ -58,6 +54,7 @@ namespace filemon.Variable{
             OnCreatedWebHook = GetVariable("WH_ON_CREATED");
             OnRenamedWebHook = GetVariable("WH_ON_RENAMED");
             OnDeletedWebHook = GetVariable("WH_ON_DELETED");
+            WebHookSignature = GetVariable("WH_SIGNATURE");
 
             if(WebHookSelected){
                 if(string.IsNullOrWhiteSpace( OnChangedWebHook ))
