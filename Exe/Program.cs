@@ -8,7 +8,7 @@ namespace filemon.Exe
         
         static void Main(string[] args)
         {
-            Watcher watcher = new Watcher();
+            Watcher watcher = Watcher.CreateWatcher();
             watcher.Path = args.Length>0 ? args[0] : "/home/cleantie/Documents/git/filemon/Exe";
             Console.WriteLine("watcher started!");
             watcher.Run();

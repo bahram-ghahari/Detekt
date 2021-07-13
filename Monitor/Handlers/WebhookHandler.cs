@@ -4,6 +4,7 @@ using System.IO;
 namespace filemon.Monitor{
     public class WebhookHandler : IChangeHandler
     { 
+        public string Name { get{return "WH";}}
         public void OnChanged(object sender, FileSystemEventArgs e){
              
         }

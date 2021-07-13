@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace filemon.Monitor
 {
     public class Watcher
     {
-
-        public Watcher(){
+        private static Watcher _instance;
+        private Watcher(){
             Path = "/App";
             Handler = new ConsoleHandler();
             Filters = NotifyFilters.Attributes
@@ -15,32 +16,46 @@ namespace filemon.Monitor
                                  | NotifyFilters.FileName 
                                  | NotifyFilters.Security
                                  | NotifyFilters.Size;
+            FileWatchers = new List<FileSystemWatcher>();
+        }
+        public static Watcher CreateWatcher(){
+            if(_instance == null)
+            {
+                _instance = new Watcher();
+
+
+            }
+            return _instance;
         }
         public IChangeHandler Handler { get; set; }
         public string Path { get; set; }
-        public FileSystemWatcher FileWatcher { get; set; }
+        public List<FileSystemWatcher> FileWatchers { get; set; }
  
         public NotifyFilters Filters { get; set; }
 
 
         public void  Run(){
- 
+            
+            FileWatchers.ForEach(fw=>{
 
-            FileWatcher = new FileSystemWatcher(Path);
+                fw = new FileSystemWatcher(Path);
 
-            FileWatcher.NotifyFilter = this.Filters;
+                fw.NotifyFilter = this.Filters;
 
-            FileWatcher.Changed += Handler.OnChanged;
-            FileWatcher.Created += Handler.OnCreated;
-            FileWatcher.Deleted += Handler.OnDeleted;
-            FileWatcher.Renamed += Handler.OnRenamed;
-            FileWatcher.Error   += Handler.OnError;
+                fw.Changed += Handler.OnChanged;
+                fw.Created += Handler.OnCreated;
+                fw.Deleted += Handler.OnDeleted;
+                fw.Renamed += Handler.OnRenamed;
+                fw.Error   += Handler.OnError;
 
-            FileWatcher.IncludeSubdirectories = true;
-            FileWatcher.EnableRaisingEvents = true; 
+                fw.IncludeSubdirectories = true;
+                fw.EnableRaisingEvents = true; 
+            });
+
         }
 
 
  
     }
+
 }
