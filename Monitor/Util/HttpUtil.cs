@@ -33,5 +33,67 @@ namespace filemon.Util{
                 return await response.Content.ReadAsStringAsync();
             }
         }
+
+
+
+    public async Task UploadAsync()
+    {
+        // Google Cloud Platform project ID.
+        const string projectId = "project-id-goes-here";
+
+        // The name for the new bucket.
+        const string bucketName = projectId + "-test-bucket";
+
+        // Path to the file to upload
+        const string filePath = @"C:\path\to\image.jpg";
+
+        var newObject = new Google.Apis.Storage.v1.Data.Object
+        {
+            Bucket = bucketName,
+            Name = System.IO.Path.GetFileNameWithoutExtension(filePath),
+            ContentType = "image/jpeg"
+        };
+
+        // read the JSON credential file saved when you created the service account
+        var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromJson(System.IO.File.ReadAllText(
+            @"c:\path\to\service-account-credentials.json"));
+
+        // Instantiates a client.
+        using (var storageClient = Google.Cloud.Storage.V1.StorageClient.Create(credential))
+        {
+            try
+            {
+                // Creates the new bucket. Only required the first time.
+                // You can also create buckets through the GCP cloud console web interface
+                //storageClient.CreateBucket(projectId, bucketName); 
+
+                // Open the image file filestream
+                using (var fileStream = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+                { 
+                    // set minimum chunksize just to see progress updating
+                    var uploadObjectOptions = new Google.Cloud.Storage.V1.UploadObjectOptions
+                    {
+                        ChunkSize = Google.Cloud.Storage.V1.UploadObjectOptions.MinimumChunkSize
+                    };
+ 
+
+                    await storageClient.UploadObjectAsync(
+                            newObject, 
+                            fileStream,
+                            uploadObjectOptions)
+                        .ConfigureAwait(false);
+                }
+
+            }
+            catch (Google.GoogleApiException e)
+                when (e.Error.Code == 409)
+            { 
+            }
+            catch (Exception e)
+            { 
+            }
+        }
+    }
+
     }
 }

@@ -15,5 +15,9 @@ namespace filemon.Util{
             DirectoryInfo di = new DirectoryInfo(path);
             return di.Exists;
         }
+        public static FileStream GetStream(string path){
+            FileStream fs = new FileStream(path , FileMode.Open,FileAccess.Read);
+            return fs;
+        }
     }
 }

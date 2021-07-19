@@ -20,7 +20,7 @@ namespace filemon.Monitor{
                 case "WH": return new WebhookHandler();
                 case "CON": return new ConsoleHandler();
 
-                case "GCP": throw new NotImplementedException();
+                case "GCP": return new GCPHandler();
                 case "AWS": throw new NotImplementedException();
 
                 default: throw new ArgumentException();
