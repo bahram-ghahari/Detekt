@@ -21,20 +21,25 @@ namespace filemon.Monitor{
         public GCPHandler(){
             _storage = StorageClient.Create();
         }
-        public void OnChanged(object sender, FileSystemEventArgs e){
-            try{
-                _storage.DeleteObject(GlobalVariable.Bucket,e.Name);
-                var fs = filemon.Util.FileUtil.GetStream(e.FullPath); 
-                _storage.UploadObject(GlobalVariable.Bucket,e.Name,"application/octet-stream",fs);
 
-            }catch{}
+
+
+        public void OnChanged(object sender, FileSystemEventArgs e){
+            if(!filemon.Util.FileUtil.isDirectory(e.FullPath)){
+                var list = _storage.ListObjects(GlobalVariable.Bucket,e.Name);
+                if(list.Count()>0){ 
+                    _storage.DeleteObject(GlobalVariable.Bucket,e.Name);
+                 
+                    UploadFile(e.FullPath,e.Name);  
+                }else
+                    UploadFile(e.FullPath,e.Name);
+                
+            }
         }
         public void OnCreated(object sender, FileSystemEventArgs e){
-            if(!filemon.Util.FileUtil.isDirectory(e.Name)){
-                var fs = filemon.Util.FileUtil.GetStream(e.FullPath); 
-                _storage.UploadObject(GlobalVariable.Bucket,e.Name,"application/octet-stream",fs);
-                fs.Close();
-            }
+            if(!filemon.Util.FileUtil.isDirectory(e.FullPath))
+                UploadFile(e.FullPath,e.Name);
+            
         }
         public void OnDeleted(object sender, FileSystemEventArgs e){
             try{
@@ -42,11 +47,10 @@ namespace filemon.Monitor{
                 var objects = _storage.ListObjects(GlobalVariable.Bucket);
                 var list = objects.ToList();
                 foreach (var item in list)
-                {
-                    if(item.Name.StartsWith(e.Name)){
+                    if(item.Name.StartsWith(e.Name))
                         _storage.DeleteObject(GlobalVariable.Bucket,item.Name);
-                    }
-                }
+                    
+                
 
             }
             catch(Exception ex) {}
@@ -75,10 +79,8 @@ namespace filemon.Monitor{
                 FileStream fs = null;
                 try{
                     var path = Path.Combine( GlobalVariable.Path , item.Name );
-                    if(path.EndsWith("/")){
+                    if(!path.EndsWith("/")){ 
                         filemon.Util.FileUtil.createDirectory(path);
-                    }
-                    else{
                         fs = filemon.Util.FileUtil.GetStream(path);
                         _storage.DownloadObject(GlobalVariable.Bucket,item.Name,fs);
                     }
@@ -98,6 +100,18 @@ namespace filemon.Monitor{
         }
         public void OnDestroy(object sender,  EventArgs e){
 
+        }
+
+        private void UploadFile(string fullPath , string name){
+            FileStream fs = null;
+
+            try{
+                fs = filemon.Util.FileUtil.GetStream(fullPath); 
+                _storage.UploadObject(GlobalVariable.Bucket,name,"application/octet-stream",fs);
+            }catch(Exception ex){}
+            finally{
+                if(fs!=null)fs.Close();
+            } 
         }
     }
 }

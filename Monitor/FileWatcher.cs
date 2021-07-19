@@ -10,11 +10,9 @@ namespace filemon.Monitor
         private Watcher(FilemonVariable var){
             GlobalVaribles = var; 
             Handlers = new List<IChangeHandler>(); 
-            Filters = NotifyFilters.Attributes
-                                 | NotifyFilters.CreationTime
+            Filters = NotifyFilters.CreationTime
                                  | NotifyFilters.DirectoryName
-                                 | NotifyFilters.FileName 
-                                 | NotifyFilters.Security
+                                 | NotifyFilters.FileName  
                                  | NotifyFilters.Size;
             FileWatcher = new FileSystemWatcher();
 

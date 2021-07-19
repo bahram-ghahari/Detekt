@@ -18,8 +18,19 @@ namespace filemon.Util{
             return di.Exists;
         }
         public static void createDirectory(string path){
-            DirectoryInfo di = new DirectoryInfo(path); 
-            di.Create();
+            var dirs = path.Split('/',StringSplitOptions.RemoveEmptyEntries);
+            var comulative_path = "";
+            foreach (var dir in dirs)
+            {
+                if(dir.IndexOf('.')==-1)
+                {
+                    comulative_path+=("/"+dir);
+                    DirectoryInfo di = new DirectoryInfo(comulative_path); 
+             
+                    if(!di.Exists)di.Create();
+                }
+            }
+            
         }
         public static FileStream GetStream(string path   ){
             FileStream fs = new FileStream(path , FileMode.OpenOrCreate,FileAccess.ReadWrite);
