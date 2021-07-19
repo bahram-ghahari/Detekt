@@ -65,6 +65,13 @@ namespace test
         public void OnError(object sender,  ErrorEventArgs e){
             a3 = e; 
         }
+
+        public void OnStart(object sender,  EventArgs e){
+
+        }
+        public void OnDestroy(object sender,  EventArgs e){
+
+        }
         public async Task<T> Get<T>()
         {
             System.Threading.Thread.Sleep(2000);//wait for 1 second and check flags

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace filemon.Monitor{
     public class WebhookHandler : IChangeHandler
-    { 
+    {
         public FilemonVariable GlobalVariable { get; set; }
         public string Name { get{return "WH";}}
         public void OnChanged(object sender, FileSystemEventArgs e){
@@ -40,7 +40,12 @@ namespace filemon.Monitor{
         public void OnError(object sender,  ErrorEventArgs e){ 
 
         }
+        public void OnStart(object sender,  EventArgs e){
 
+        }
+        public void OnDestroy(object sender,  EventArgs e){
+
+        }
 
 
 

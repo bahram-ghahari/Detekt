@@ -12,6 +12,9 @@ namespace filemon.Monitor{
         void OnDeleted(object sender, FileSystemEventArgs e);
         void OnRenamed(object sender, RenamedEventArgs e);
         void OnError(object sender,  ErrorEventArgs e);
+        void OnStart(object sender,  EventArgs e); 
+        void OnDestroy(object sender,  EventArgs e);
+
     }
 
     public class HandlerFactory{

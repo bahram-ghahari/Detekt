@@ -53,7 +53,7 @@ namespace filemon.Variable{
 
  
             if(string.IsNullOrWhiteSpace(ContainerId)){
-                ContainerId = "CON-";
+                ContainerId = "con-";
                 var rand = new Random();
                 var random_number = rand.Next(1000000,9999999);
                 ContainerId+=random_number;
@@ -65,7 +65,13 @@ namespace filemon.Variable{
 
 
             var WebHookSelected = Handler.Count(x=>x.ToUpper().Trim() == WH)>0;
- 
+            var GcpSelected = Handler.Count(x=>x.ToUpper().Trim() == GCP)>0;
+            if(GcpSelected){
+                if(string.IsNullOrWhiteSpace(Bucket)){
+                    Bucket = ContainerId; 
+                    Warn("Variable 'GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
+                }
+            }
 
 
             if(WebHookSelected){
@@ -77,7 +83,6 @@ namespace filemon.Variable{
                     Warn("'WH' Handler is selected, However '-wh-rn' has not been set. File name changes will not be captured."); 
                 if(string.IsNullOrEmpty( OnCreatedWebHook ))
                     Warn("'WH' Handler is selected, However '-wh-cr' has not been set. New files will not be captured."); 
-                
             }
 
         }
@@ -92,6 +97,8 @@ namespace filemon.Variable{
             {"-wh-rn","--wh-on-renamed"},
             {"-wh-de","--wh-on-deleted"},
             {"-wh-sig","--wh-signature"},
+            {"-gcp-b","--gcp-bucket"},
+
 */
             ArgIndicator.Add( new  ArgumentBit{ 
                     ShortArg = "-p",
@@ -177,6 +184,18 @@ namespace filemon.Variable{
                     Func=(string str)=>{
                         if(str.StartsWith("-"))throw new ArgumentException("Invalid Web hook value");
                         WebHookSignature = str;
+                        return str;
+                    }
+                }
+            );
+
+            ArgIndicator.Add( new  ArgumentBit{ 
+                    ShortArg = "gcp-b",
+                    LongArg="--gcp-bucket",
+                    Description="Storage bucket name for Google Cloud Platform" , 
+                    Func=(string str)=>{
+                        if(str.StartsWith("-"))throw new ArgumentException("Invalid bucket name");
+                        Bucket = str;
                         return str;
                     }
                 }

@@ -51,8 +51,9 @@ namespace filemon.Monitor
 
             FileWatcher.IncludeSubdirectories = true;
             FileWatcher.EnableRaisingEvents = true; 
- 
+    
             Handlers.ForEach(h=>{  
+                h.OnStart(this,new EventArgs());
                 FileWatcher.Changed += h.OnChanged;
                 FileWatcher.Created += h.OnCreated;
                 FileWatcher.Deleted += h.OnDeleted;

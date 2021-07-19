@@ -27,5 +27,11 @@ namespace filemon.Monitor{
             Console.WriteLine("File Error! "+e.GetException().Message);
 
         }
+        public void OnStart(object sender,  EventArgs e){
+
+        }
+        public void OnDestroy(object sender,  EventArgs e){
+
+        }
     }
 }

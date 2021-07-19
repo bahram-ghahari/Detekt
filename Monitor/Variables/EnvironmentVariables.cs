@@ -37,7 +37,7 @@ namespace filemon.Variable{
 
             ContainerId = GetVariable("CONTAINER_ID");
             if(string.IsNullOrWhiteSpace(ContainerId)){
-                ContainerId = "CON-";
+                ContainerId = "con-";
                 var rand = new Random();
                 var random_number = rand.Next(1000000,9999999);
                 ContainerId+=random_number;
@@ -48,7 +48,20 @@ namespace filemon.Variable{
 
 
 
+
             var WebHookSelected = Handler.Count(x=>x.ToUpper().Trim() == WH)>0;
+            var GcpSelected = Handler.Count(x=>x.ToUpper().Trim() == GCP)>0;
+
+
+            Bucket = GetVariable("GCP_BUCKET");
+            if(GcpSelected){
+                if(string.IsNullOrWhiteSpace(Bucket)){
+                    Bucket = ContainerId; 
+                    Warn("Variable 'GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
+                }
+            }
+
+
 
             OnChangedWebHook = GetVariable("WH_ON_CHANGED");
             OnCreatedWebHook = GetVariable("WH_ON_CREATED");
