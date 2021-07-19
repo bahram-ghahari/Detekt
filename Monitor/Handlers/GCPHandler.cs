@@ -31,9 +31,9 @@ namespace filemon.Monitor{
         }
         public void OnCreated(object sender, FileSystemEventArgs e){
             if(!filemon.Util.FileUtil.isDirectory(e.Name)){
-                var fs = filemon.Util.FileUtil.GetStream(e.FullPath);
-                
+                var fs = filemon.Util.FileUtil.GetStream(e.FullPath); 
                 _storage.UploadObject(GlobalVariable.Bucket,e.Name,"application/octet-stream",fs);
+                fs.Close();
             }
         }
         public void OnDeleted(object sender, FileSystemEventArgs e){
@@ -67,11 +67,33 @@ namespace filemon.Monitor{
          
            
            if(list.Count()>0){//BUCKET EXISTS
-            
+            var objects = _storage.ListObjects(GlobalVariable.Bucket);
+            var object_list = objects.ToList();
 
+            foreach (var item in object_list)
+            {
+                FileStream fs = null;
+                try{
+                    var path = Path.Combine( GlobalVariable.Path , item.Name );
+                    if(path.EndsWith("/")){
+                        filemon.Util.FileUtil.createDirectory(path);
+                    }
+                    else{
+                        fs = filemon.Util.FileUtil.GetStream(path);
+                        _storage.DownloadObject(GlobalVariable.Bucket,item.Name,fs);
+                    }
+
+                }catch(Exception ex)
+                {
+
+                }
+                finally{
+                    if(fs != null)fs.Close();
+                }
+                
+            }
            }else{
             _storage.CreateBucket(GlobalVariable.ProjectId,GlobalVariable.Bucket);
-
            }
         }
         public void OnDestroy(object sender,  EventArgs e){

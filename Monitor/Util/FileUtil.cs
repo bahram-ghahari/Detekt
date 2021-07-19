@@ -17,8 +17,12 @@ namespace filemon.Util{
             DirectoryInfo di = new DirectoryInfo(path); 
             return di.Exists;
         }
-        public static FileStream GetStream(string path){
-            FileStream fs = new FileStream(path , FileMode.Open,FileAccess.Read);
+        public static void createDirectory(string path){
+            DirectoryInfo di = new DirectoryInfo(path); 
+            di.Create();
+        }
+        public static FileStream GetStream(string path   ){
+            FileStream fs = new FileStream(path , FileMode.OpenOrCreate,FileAccess.ReadWrite);
             return fs;
         }
 
