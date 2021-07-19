@@ -59,6 +59,10 @@ namespace filemon.Variable{
                     Bucket = ContainerId; 
                     Warn("Variable 'GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
                 }
+                ProjectId = GetVariable("GCP_PROJECT_ID");
+                if(string.IsNullOrWhiteSpace(ProjectId)){
+                    throw new ArgumentException("Variable 'GCP_PROJECT_ID' is not set.");
+                } 
             }
 
 

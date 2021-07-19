@@ -17,7 +17,7 @@ public abstract class FilemonVariable
     public string[] Handler { get; set; }
     public string Path { get; set; }
     public string Bucket { get; set; }
-
+    public string ProjectId { get; set; }
     public string ContainerId { get; set; }
     public string OnChangedWebHook { get; set; }
     public string OnRenamedWebHook { get; set; }

@@ -63,14 +63,14 @@ namespace filemon.Monitor{
  
             var option = new ListBucketsOptions(); 
             option.Prefix = GlobalVariable.Bucket;
-            var list = _storage.ListBuckets("terapeak-a23a1",option);
+            var list = _storage.ListBuckets(GlobalVariable.ProjectId,option);
          
            
            if(list.Count()>0){//BUCKET EXISTS
             
 
            }else{
-            _storage.CreateBucket("terapeak-a23a1",GlobalVariable.Bucket);
+            _storage.CreateBucket(GlobalVariable.ProjectId,GlobalVariable.Bucket);
 
            }
         }

@@ -71,6 +71,10 @@ namespace filemon.Variable{
                     Bucket = ContainerId; 
                     Warn("Variable 'GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
                 }
+
+                if(string.IsNullOrWhiteSpace(ProjectId)){
+                    throw new ArgumentException("Variable 'GCP_PROJECT_ID' is not set.");
+                } 
             }
 
 
@@ -196,6 +200,19 @@ namespace filemon.Variable{
                     Func=(string str)=>{
                         if(str.StartsWith("-"))throw new ArgumentException("Invalid bucket name");
                         Bucket = str;
+                        return str;
+                    }
+                }
+            );
+
+
+            ArgIndicator.Add( new  ArgumentBit{ 
+                    ShortArg = "gcp-pp",
+                    LongArg="--gcp-project-id",
+                    Description="Project id for Google Cloud Platform" , 
+                    Func=(string str)=>{
+                        if(str.StartsWith("-"))throw new ArgumentException("Invalid project name");
+                        ProjectId = str;
                         return str;
                     }
                 }
