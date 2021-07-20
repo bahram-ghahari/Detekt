@@ -10,8 +10,7 @@ namespace filemon.Exe
         {
             try{
                 var arg_var = new filemon.Variable.FilemonEnvironmentVariables();
-                Watcher watcher = Watcher.CreateWatcher(arg_var);
-                //watcher.Path = args.Length>0 ? args[0] : "/home/cleantie/Documents/git/filemon/Exe";
+                Watcher watcher = Watcher.CreateWatcher(arg_var); 
                 
                 
                 Write( ConsoleColor.Green , "Filemon started!");
@@ -46,7 +45,6 @@ namespace filemon.Exe
                 return false;
             }
             return true;
-
         }
     }
 }
