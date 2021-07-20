@@ -49,8 +49,6 @@ namespace filemon.Monitor{
                 foreach (var item in list)
                     if(item.Name.StartsWith(e.Name))
                         _storage.DeleteObject(GlobalVariable.Bucket,item.Name);
-                    
-                
 
             }
             catch(Exception ex) {}

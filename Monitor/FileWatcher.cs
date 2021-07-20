@@ -13,7 +13,8 @@ namespace filemon.Monitor
             Filters = NotifyFilters.CreationTime
                                  | NotifyFilters.DirectoryName
                                  | NotifyFilters.FileName  
-                                 | NotifyFilters.Size;
+                                 | NotifyFilters.Size
+                                 | NotifyFilters.LastWrite;
             FileWatcher = new FileSystemWatcher();
 
         }
@@ -46,9 +47,9 @@ namespace filemon.Monitor
 
             FileWatcher = new FileSystemWatcher(GlobalVaribles.Path);
             FileWatcher.NotifyFilter = this.Filters;
-
             FileWatcher.IncludeSubdirectories = true;
             FileWatcher.EnableRaisingEvents = true; 
+ 
     
             Handlers.ForEach(h=>{  
                 h.OnStart(this,new EventArgs());

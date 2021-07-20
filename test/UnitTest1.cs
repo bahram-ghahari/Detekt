@@ -12,18 +12,16 @@ namespace test
         public async Task Test1()
         {
             
-
             var path = Directory.GetCurrentDirectory();
             string name = "sample";
             string dir_name = Path.Combine(path,name);
-
+            
             var v = new _Variable();
             v.ContainerId="con-234";
             v.Path = path;
             v.Handler = new string[]{"CON"};
             var w =  Watcher.CreateWatcher(v);
         
-
             w.Run();
 
             Directory.CreateDirectory(dir_name);  
