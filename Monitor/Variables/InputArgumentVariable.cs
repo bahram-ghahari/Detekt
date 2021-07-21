@@ -6,8 +6,7 @@ namespace filemon.Variable{
 
     public class InputArgumentVariables:FilemonVariable{
  
-
-
+ 
         private List<ArgumentBit> ArgIndicator =  new List<ArgumentBit> ();
         private string[] args;
 
@@ -38,7 +37,7 @@ namespace filemon.Variable{
                 throw new ArgumentException("Variable '-h' is not set.");
             for (int i = 0; i < this.Handler.Length; i++)
                 if(!IsHandlerValid( this.Handler[i] ))
-                    throw new ArgumentException(Handler[i]+" is not a valid filemon handler.");
+                    throw new ArgumentException(Handler[i]+" is not a valid DETEKT handler.");
             
 
 
@@ -102,6 +101,8 @@ namespace filemon.Variable{
             {"-wh-de","--wh-on-deleted"},
             {"-wh-sig","--wh-signature"},
             {"-gcp-b","--gcp-bucket"},
+            {"-gcp-p","--gcp-project-id"},
+
 
 */
             ArgIndicator.Add( new  ArgumentBit{ 
@@ -207,7 +208,7 @@ namespace filemon.Variable{
 
 
             ArgIndicator.Add( new  ArgumentBit{ 
-                    ShortArg = "gcp-pp",
+                    ShortArg = "gcp-p",
                     LongArg="--gcp-project-id",
                     Description="Project id for Google Cloud Platform" , 
                     Func=(string str)=>{

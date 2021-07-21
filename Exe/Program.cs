@@ -12,12 +12,11 @@ namespace filemon.Exe
                 var arg_var = new filemon.Variable.FilemonEnvironmentVariables();
                 Watcher watcher = Watcher.CreateWatcher(arg_var); 
                 
-                
-                Write( ConsoleColor.Green , "Filemon started!");
-
                 watcher.GlobalVaribles.WarningCreated+=(WarningEventArgs a)=> Write(ConsoleColor.Yellow , String.Format("Warning: {0}",a.Message));
                 watcher.Run();
 
+
+                Write( ConsoleColor.Green , "DETEKT started!");
 
 
                 var cmd = "";
@@ -34,6 +33,7 @@ namespace filemon.Exe
                 Write( ConsoleColor.DarkRed , string.Format("Error: {0}",e.Message ));
             }
         }
+
         static void Write(ConsoleColor col , string message){
                 Console.ForegroundColor = col;
                 Console.Out.WriteLine(message);

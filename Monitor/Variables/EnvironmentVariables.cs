@@ -15,12 +15,14 @@ namespace filemon.Variable{
 
 
             var _handler = GetVariable("DETEKT_CHANGE_HANDLER");
+            if(string.IsNullOrWhiteSpace(_handler))
+                throw new ArgumentException("Environment variable 'DETEKT_CHANGE_HANDLER' is not set.");
             this.Handler = _handler.Split('|',StringSplitOptions.RemoveEmptyEntries);
             if(Handler.Length==0)
-                throw new ArgumentException("Variable 'CHANGE_HANDLER' is not set.");
+                throw new ArgumentException("Environment variable 'CHANGE_HANDLER' is not set.");
             for (int i = 0; i < this.Handler.Length; i++)
                 if(!IsHandlerValid( this.Handler[i] ))
-                    throw new ArgumentException(Handler[i]+" is not a valid filemon handler.");
+                    throw new ArgumentException(Handler[i]+" is not a valid DETEKT handler.");
             
 
 
@@ -28,7 +30,7 @@ namespace filemon.Variable{
             
             Path = GetVariable("DETEKT_PATH_TO_WATCH");
             if(string.IsNullOrWhiteSpace(Path))
-                throw new ArgumentException("Variable 'DETEKT_PATH_TO_WATCH' is not set.");
+                throw new ArgumentException("Environment variable 'DETEKT_PATH_TO_WATCH' is not set.");
 
 
 
@@ -41,7 +43,7 @@ namespace filemon.Variable{
                 var rand = new Random();
                 var random_number = rand.Next(1000000,9999999);
                 ContainerId+=random_number;
-                Warn("Variable 'DETEKT_CONTAINER_ID' is not set. '"+ContainerId+"' was generated randomly as the container name."); 
+                Warn("Environment variable 'DETEKT_CONTAINER_ID' is not set. '"+ContainerId+"' was generated randomly as the container name."); 
 
             }
 
@@ -57,11 +59,11 @@ namespace filemon.Variable{
             if(GcpSelected){
                 if(string.IsNullOrWhiteSpace(Bucket)){
                     Bucket = ContainerId; 
-                    Warn("Variable 'DETEKT_GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
+                    Warn("v 'DETEKT_GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
                 }
                 ProjectId = GetVariable("DETEKT_GCP_PROJECT_ID");
                 if(string.IsNullOrWhiteSpace(ProjectId)){
-                    throw new ArgumentException("Variable 'DETEKT_GCP_PROJECT_ID' is not set.");
+                    throw new ArgumentException("Environment variable 'DETEKT_GCP_PROJECT_ID' is not set.");
                 } 
             }
 
@@ -75,13 +77,13 @@ namespace filemon.Variable{
 
             if(WebHookSelected){
                 if(string.IsNullOrWhiteSpace( OnChangedWebHook ))
-                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_CHANGED' has not been set. File changes will not be captured."); 
+                    Warn("'WH' Handler is selected, However environment variable 'DETEKT_WH_ON_CHANGED' has not been set. File changes will not be captured."); 
                 if(string.IsNullOrWhiteSpace( OnDeletedWebHook ))
-                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_DELETED' has not been set. File deletions will not be captured."); 
+                    Warn("'WH' Handler is selected, However environment variable 'DETEKT_WH_ON_DELETED' has not been set. File deletions will not be captured."); 
                 if(string.IsNullOrWhiteSpace( OnRenamedWebHook ))
-                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_RENAMED' has not been set. File name changes will not be captured."); 
+                    Warn("'WH' Handler is selected, However environment variable 'DETEKT_WH_ON_RENAMED' has not been set. File name changes will not be captured."); 
                 if(string.IsNullOrWhiteSpace( OnCreatedWebHook ))
-                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_CREATED' has not been set. New files will not be captured."); 
+                    Warn("'WH' Handler is selected, However environment variable 'DETEKT_WH_ON_CREATED' has not been set. New files will not be captured."); 
                 
             }
 
