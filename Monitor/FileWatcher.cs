@@ -45,12 +45,12 @@ namespace filemon.Monitor
                 Handlers.Add(_created_handler);
             }
 
+
             FileWatcher = new FileSystemWatcher(GlobalVaribles.Path);
             FileWatcher.NotifyFilter = this.Filters;
             FileWatcher.IncludeSubdirectories = true;
-            FileWatcher.EnableRaisingEvents = true; 
- 
-    
+            FileWatcher.EnableRaisingEvents = true;  
+            
             Handlers.ForEach(h=>{  
                 h.OnStart(this,new EventArgs());
                 FileWatcher.Changed += h.OnChanged;

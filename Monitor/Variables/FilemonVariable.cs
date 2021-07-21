@@ -4,6 +4,8 @@ using System.Linq;
 public abstract class FilemonVariable
 {
     public event WarningEventHandler WarningCreated;
+    public event AskEventHandler AskCreated;
+
     protected const string CON="CON";
     protected const string WH="WH";
     protected const string GCP="GCP";
@@ -34,6 +36,10 @@ public abstract class FilemonVariable
         if(WarningCreated!=null) WarningCreated(new WarningEventArgs(message));
 
     }
+    protected string Ask(string question){
+        if(AskCreated!=null) return AskCreated(new WarningEventArgs(question));
+        else throw new NotImplementedException("AskCreated event has not been implemented!");
+    }
 
     public FilemonVariable(){
         this.Handler=new string[0];
@@ -46,3 +52,4 @@ public class WarningEventArgs:EventArgs{
     }
 }
 public delegate void WarningEventHandler(WarningEventArgs arg);
+public delegate string AskEventHandler(WarningEventArgs arg);

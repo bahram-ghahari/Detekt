@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../Monitor/Monitor.csproj"  /> 
+    <ProjectReference Include="../Monitor/Monitor.csproj" /> 
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Figgle" Version="0.4.0" />
   </ItemGroup>
 </Project>

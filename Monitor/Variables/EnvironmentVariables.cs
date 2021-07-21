@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace filemon.Variable{
 
-    public class FilemonEnvironmentVariables:FilemonVariable{
+    public class DetektEnvironmentVariable:FilemonVariable{
  
 
-        public FilemonEnvironmentVariables(){
+        public DetektEnvironmentVariable(){
         }
 
         public override void Run(){
