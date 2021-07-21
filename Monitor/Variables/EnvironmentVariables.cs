@@ -14,7 +14,7 @@ namespace filemon.Variable{
 
 
 
-            var _handler = GetVariable("CHANGE_HANDLER");
+            var _handler = GetVariable("DETEKT_CHANGE_HANDLER");
             this.Handler = _handler.Split('|',StringSplitOptions.RemoveEmptyEntries);
             if(Handler.Length==0)
                 throw new ArgumentException("Variable 'CHANGE_HANDLER' is not set.");
@@ -26,22 +26,22 @@ namespace filemon.Variable{
 
 
             
-            Path = GetVariable("PATH_TO_WATCH");
+            Path = GetVariable("DETEKT_PATH_TO_WATCH");
             if(string.IsNullOrWhiteSpace(Path))
-                throw new ArgumentException("Variable 'PATH_TO_WATCH' is not set.");
+                throw new ArgumentException("Variable 'DETEKT_PATH_TO_WATCH' is not set.");
 
 
 
 
 
 
-            ContainerId = GetVariable("CONTAINER_ID");
+            ContainerId = GetVariable("DETEKT_CONTAINER_ID");
             if(string.IsNullOrWhiteSpace(ContainerId)){
                 ContainerId = "con-";
                 var rand = new Random();
                 var random_number = rand.Next(1000000,9999999);
                 ContainerId+=random_number;
-                Warn("Variable 'CONTAINER_ID' is not set. '"+ContainerId+"' was generated randomly as the container name."); 
+                Warn("Variable 'DETEKT_CONTAINER_ID' is not set. '"+ContainerId+"' was generated randomly as the container name."); 
 
             }
 
@@ -53,35 +53,35 @@ namespace filemon.Variable{
             var GcpSelected = Handler.Count(x=>x.ToUpper().Trim() == GCP)>0;
 
 
-            Bucket = GetVariable("GCP_BUCKET");
+            Bucket = GetVariable("DETEKT_GCP_BUCKET");
             if(GcpSelected){
                 if(string.IsNullOrWhiteSpace(Bucket)){
                     Bucket = ContainerId; 
-                    Warn("Variable 'GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
+                    Warn("Variable 'DETEKT_GCP_BUCKET' is not set. '"+ContainerId+"' was generated randomly as the bucket name."); 
                 }
-                ProjectId = GetVariable("GCP_PROJECT_ID");
+                ProjectId = GetVariable("DETEKT_GCP_PROJECT_ID");
                 if(string.IsNullOrWhiteSpace(ProjectId)){
-                    throw new ArgumentException("Variable 'GCP_PROJECT_ID' is not set.");
+                    throw new ArgumentException("Variable 'DETEKT_GCP_PROJECT_ID' is not set.");
                 } 
             }
 
 
 
-            OnChangedWebHook = GetVariable("WH_ON_CHANGED");
-            OnCreatedWebHook = GetVariable("WH_ON_CREATED");
-            OnRenamedWebHook = GetVariable("WH_ON_RENAMED");
-            OnDeletedWebHook = GetVariable("WH_ON_DELETED");
-            WebHookSignature = GetVariable("WH_SIGNATURE");
+            OnChangedWebHook = GetVariable("DETEKT_WH_ON_CHANGED");
+            OnCreatedWebHook = GetVariable("DETEKT_WH_ON_CREATED");
+            OnRenamedWebHook = GetVariable("DETEKT_WH_ON_RENAMED");
+            OnDeletedWebHook = GetVariable("DETEKT_WH_ON_DELETED");
+            WebHookSignature = GetVariable("DETEKT_WH_SIGNATURE");
 
             if(WebHookSelected){
                 if(string.IsNullOrWhiteSpace( OnChangedWebHook ))
-                    Warn("'WH' Handler is selected, However 'WH_ON_CHANGED' has not been set. File changes will not be captured."); 
+                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_CHANGED' has not been set. File changes will not be captured."); 
                 if(string.IsNullOrWhiteSpace( OnDeletedWebHook ))
-                    Warn("'WH' Handler is selected, However 'WH_ON_DELETED' has not been set. File deletions will not be captured."); 
+                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_DELETED' has not been set. File deletions will not be captured."); 
                 if(string.IsNullOrWhiteSpace( OnRenamedWebHook ))
-                    Warn("'WH' Handler is selected, However 'WH_ON_RENAMED' has not been set. File name changes will not be captured."); 
+                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_RENAMED' has not been set. File name changes will not be captured."); 
                 if(string.IsNullOrWhiteSpace( OnCreatedWebHook ))
-                    Warn("'WH' Handler is selected, However 'WH_ON_CREATED' has not been set. New files will not be captured."); 
+                    Warn("'WH' Handler is selected, However 'DETEKT_WH_ON_CREATED' has not been set. New files will not be captured."); 
                 
             }
 
